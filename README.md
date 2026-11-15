@@ -62,11 +62,12 @@ Then open `http://localhost:<port>/swagger` in your browser. The port is printed
 
 ```
 TicketApi/
-├── Controllers/
+├── controllers/
 │   ├── TicketsController.cs   # Ticket CRUD endpoints
 │   └── AuthController.cs      # User registration
 ├── Migrations/                # EF Core migrations (InitialCreate, AddUsers)
-├── Ticket.cs                  # Entities (Ticket, User), TicketStatus enum, DTOs
+├── Ticket.cs                  # Ticket entity, TicketStatus enum, DTOs
+├── User.cs                    # User entity
 ├── TicketDbContext.cs         # EF Core database context
 └── Program.cs                 # App startup, dependency injection, middleware
 ```
