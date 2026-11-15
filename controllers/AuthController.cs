@@ -40,4 +40,23 @@ public class AuthController : ControllerBase
 
         return Ok(new { user.Id, user.Username });
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginDto dto)
+    {
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+        if (user == null)
+        {
+            return Unauthorized("Invalid username or password!");
+        }
+
+        var hasher = new PasswordHasher<User>();
+        var result = hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+        if (result == PasswordVerificationResult.Failed)
+        {
+            return Unauthorized("Invalid username or password!");
+        }
+
+        return Ok("Login successfull!");
+    }
 }
