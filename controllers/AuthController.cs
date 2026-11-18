@@ -3,15 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketApi;
 
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly TicketDbContext _context;
+    private readonly IConfiguration _config;
 
-    public AuthController (TicketDbContext context)
+    public AuthController (TicketDbContext context, IConfiguration config)
     {
         _context = context;
+        _config = config;
     }
 
     [HttpPost("register")]
@@ -57,6 +64,24 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid username or password!");
         }
 
-        return Ok("Login successfull!");
+        //return Ok("Login successfull!");
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Username)
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: _config["Jwt:Issuer"],
+            audience: _config["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
+            signingCredentials: credentials);
+
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        return Ok(new { token = jwt });
     }
 }

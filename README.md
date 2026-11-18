@@ -11,6 +11,7 @@ A REST API for managing customer support tickets, built with ASP.NET Core and En
 - Duplicate-username and empty-input validation
 - Proper HTTP responses: `200 OK`, `400 Bad Request`, `404 Not Found`
 - Interactive API documentation with Swagger UI
+- JWT authentication with protected endpoints
 
 ## Tech stack
 
@@ -76,4 +77,28 @@ TicketApi/
 
 - [ ] Login endpoint returning a JWT
 - [ ] Protect ticket endpoints with `[Authorize]`
+- [ ] Unit tests with xUnit
+
+### Auth
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a user. Body: `{ "username": "...", "password": "..." }` |
+| POST | `/api/auth/login` | Log in and receive a JWT valid for 1 hour |
+
+All `/api/tickets` endpoints require a token: `Authorization: Bearer <token>`.
+In Swagger, call login, then click **Authorize** and paste the token.
+
+## Configuration
+
+The JWT signing key is not stored in the repository. Set one locally with .NET user secrets:
+
+```bash
+dotnet user-secrets set "Jwt:Key" "<a random string of at least 32 characters>"
+```
+
+## Roadmap
+
+- [x] Login endpoint returning a JWT
+- [x] Protect ticket endpoints with `[Authorize]`
 - [ ] Unit tests with xUnit
