@@ -26,7 +26,7 @@ public class AuthController : ControllerBase
     {
         if(string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
         {
-            return BadRequest("Username and Password is required!");
+            return BadRequest("Username and password are required.");
         }
 
         bool exists = await _context.Users.AnyAsync(u => u.Username == dto.Username);
@@ -64,7 +64,6 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid username or password!");
         }
 
-        //return Ok("Login successfull!");
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

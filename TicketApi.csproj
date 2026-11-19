@@ -17,4 +17,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
   </ItemGroup>
 
+	<ItemGroup>
+	    <Compile Remove="TicketApi.Tests\**" />
+	    <Content Remove="TicketApi.Tests\**" />
+	    <EmbeddedResource Remove="TicketApi.Tests\**" />
+	    <None Remove="TicketApi.Tests\**" />
+	</ItemGroup>
 </Project>

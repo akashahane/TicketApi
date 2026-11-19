@@ -8,11 +8,6 @@ using TicketApi;
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase
 {
-    //private static readonly List<Ticket> _tickets = new List<Ticket>
-    //{
-    //    new Ticket("Damaged product"),
-    //    new Ticket("Wrong product delivered")
-    //};
     private readonly TicketDbContext _context;
 
     public TicketsController(TicketDbContext context)
@@ -60,7 +55,7 @@ public class TicketsController : ControllerBase
         }
         else
         {
-            found.Status = dto.status;
+            found.Status = dto.Status;
             await _context.SaveChangesAsync();
             return Ok(found);
         }

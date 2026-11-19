@@ -22,7 +22,7 @@
     }
 
     public record CreateTicketDto(string Title);
-    public record UpdateTicketStatusDto(TicketStatus status);
+    public record UpdateTicketStatusDto(TicketStatus Status);
     public record RegisterDto(string Username, string Password);
     public record LoginDto(string Username, string Password);
 }
